@@ -221,8 +221,9 @@ export function useBookings(role: 'customer' | 'provider', userId: string) {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const col = role === 'customer' ? 'customer_id' : 'provider_id';
+
   const load = useCallback(async () => {
-    const col = role === 'customer' ? 'customer_id' : 'provider_id';
     const { data } = await supabase
       .from('bookings')
       .select('*')
@@ -230,7 +231,7 @@ export function useBookings(role: 'customer' | 'provider', userId: string) {
       .order('created_at', { ascending: false });
     setBookings((data as Booking[]) ?? []);
     setLoading(false);
-  }, [role, userId]);
+  }, [col, userId]);
 
   useEffect(() => {
     load();
@@ -239,7 +240,7 @@ export function useBookings(role: 'customer' | 'provider', userId: string) {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings', filter: `${col}=eq.${userId}` }, () => load())
       .subscribe();
     return () => { supabase.removeChannel(sub); };
-  }, [load, role, userId]);
+  }, [load, col, role, userId]);
 
   return { bookings, loading, reload: load };
 }

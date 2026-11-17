@@ -182,9 +182,20 @@ export function AuthScreen() {
               ← Change number
             </button>
             <h1 className="text-2xl font-extrabold text-ink-900 mb-1">Verify OTP</h1>
-            <p className="text-ink-500 mb-8">
+            <p className="text-ink-500 mb-4">
               Sent to <span className="font-semibold text-ink-700">{fullPhone}</span>
             </p>
+            <div className="rounded-2xl bg-accent-50 border border-accent-200 px-4 py-3 mb-6 flex items-center justify-between">
+              <p className="text-sm text-accent-800">
+                <span className="font-semibold">Demo OTP:</span> {sentOtp}
+              </p>
+              <button
+                onClick={() => setOtp(sentOtp)}
+                className="chip bg-accent-500 text-white"
+              >
+                Auto-fill
+              </button>
+            </div>
             <input
               className="input text-center text-2xl tracking-[0.5em] font-bold"
               placeholder="••••••"
